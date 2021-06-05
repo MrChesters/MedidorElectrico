@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MedidorModel\MedidorModel.csproj">
+      <Project>{858561b3-0052-42b4-b8fd-5f60b77828b9}</Project>
+      <Name>MedidorModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
