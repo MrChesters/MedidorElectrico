@@ -58,7 +58,7 @@ namespace MedidorElectrico
         {
             try
             {
-                Console.WriteLine("Ingrese numero de medidor, fecha 00/00/00 00:00:00 y valor consumo (separe con un |)");
+                Console.WriteLine("Ingrese numero de medidor | fecha YYYY-MM-DD Hr:mm:sg | valor consumo (separe con un |)");
                 string datos = Console.ReadLine().Trim();
 
                 string[] dato = datos.Split('|', '|', '|');
@@ -78,6 +78,7 @@ namespace MedidorElectrico
                 {
                     medidorDAL.AgregarMedidor(medidor);
                 }
+                Console.WriteLine("Los datos se han ingresado correctamente");
             }
             catch{ 
                 Console.WriteLine("Los datos ingresados son erroneos");
