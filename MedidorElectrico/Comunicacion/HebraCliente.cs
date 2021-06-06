@@ -38,6 +38,7 @@ namespace MedidorElectrico.Comunicacion
             {
                 medidorDAL.AgregarMedidor(medidor);
             }
+            clienteCom.Escribir("Datos ingresados correctamente");
             clienteCom.Desconectar();
         }
     }

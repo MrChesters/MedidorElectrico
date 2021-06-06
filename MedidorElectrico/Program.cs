@@ -33,7 +33,7 @@ namespace MedidorElectrico
             Console.WriteLine("Bienvenido");
             Console.WriteLine("1. Ingresar");
             Console.WriteLine("2. Mostrar");
-            Console.WriteLine("0. Salir");
+            Console.WriteLine("Para salir diga OK");
 
             switch (Console.ReadLine().Trim())
             {
@@ -43,7 +43,7 @@ namespace MedidorElectrico
                 case "2":
                     Mostrar();
                     break;
-                case "0":
+                case "OK":
                     continuar = false;
                     break;
                 default:
@@ -56,7 +56,7 @@ namespace MedidorElectrico
 
         private static void Ingresar()
         {
-            Console.WriteLine("Ingrese numero de medidor, fecha y valor consumo (separe con un |)");
+            Console.WriteLine("Ingrese numero de medidor, fecha 00/00/00 00:00:00 y valor consumo (separe con un |)");
             string datos = Console.ReadLine().Trim();
 
             string[] dato = datos.Split('|', '|', '|');
