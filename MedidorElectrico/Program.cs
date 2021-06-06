@@ -56,13 +56,13 @@ namespace MedidorElectrico
 
         private static void Ingresar()
         {
-            Console.WriteLine("Ingrese datos:  ");
+            Console.WriteLine("Ingrese numero de medidor, fecha y valor consumo (separe con un |)");
             string datos = Console.ReadLine().Trim();
 
             string[] dato = datos.Split('|', '|', '|');
 
             int num = Convert.ToInt32(dato[0]);
-            string fecha = Convert.ToString(dato[1]);
+            DateTime fecha = Convert.ToDateTime(dato[1]);
             decimal valor = Convert.ToDecimal(dato[2]);
 
             Medidor medidor = new Medidor()

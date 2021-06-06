@@ -31,7 +31,7 @@ namespace MedidorElectrico.Comunicacion
             Medidor medidor = new Medidor()
             {
                 NroMedidor = Convert.ToInt32(numero),
-                Fecha = Convert.ToString(fecha),
+                Fecha = DateTime.Parse(fecha),
                 ValorConsumo = Convert.ToDecimal(valor)
             };
             lock (medidorDAL)
