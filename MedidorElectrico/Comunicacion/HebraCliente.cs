@@ -25,7 +25,7 @@ namespace MedidorElectrico.Comunicacion
             {
                 clienteCom.Escribir("Ingrese numero de medidor");
                 string numero = clienteCom.Leer();
-                clienteCom.Escribir("Ingrese fecha");
+                clienteCom.Escribir("Ingrese fecha (YYYY-MM-DD Hr:mm:sg)");
                 string fecha = clienteCom.Leer();
                 clienteCom.Escribir("Ingrese valor consumo");
                 string valor = clienteCom.Leer();
