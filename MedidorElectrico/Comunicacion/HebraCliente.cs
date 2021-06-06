@@ -21,25 +21,32 @@ namespace MedidorElectrico.Comunicacion
 
         public void Ejecutar()
         {
-            clienteCom.Escribir("Ingrese numero de medidor");
-            string numero = clienteCom.Leer();
-            clienteCom.Escribir("Ingrese fecha");
-            string fecha = clienteCom.Leer();
-            clienteCom.Escribir("Ingrese valor consumo");
-            string valor = clienteCom.Leer();
+            try
+            {
+                clienteCom.Escribir("Ingrese numero de medidor");
+                string numero = clienteCom.Leer();
+                clienteCom.Escribir("Ingrese fecha");
+                string fecha = clienteCom.Leer();
+                clienteCom.Escribir("Ingrese valor consumo");
+                string valor = clienteCom.Leer();
 
-            Medidor medidor = new Medidor()
+                Medidor medidor = new Medidor()
+                {
+                    NroMedidor = Convert.ToInt32(numero),
+                    Fecha = DateTime.Parse(fecha),
+                    ValorConsumo = Convert.ToDecimal(valor)
+                };
+                lock (medidorDAL)
+                {
+                    medidorDAL.AgregarMedidor(medidor);
+                }
+                clienteCom.Escribir("Datos ingresados correctamente");
+                clienteCom.Desconectar();
+            }catch
             {
-                NroMedidor = Convert.ToInt32(numero),
-                Fecha = DateTime.Parse(fecha),
-                ValorConsumo = Convert.ToDecimal(valor)
-            };
-            lock (medidorDAL)
-            {
-                medidorDAL.AgregarMedidor(medidor);
+                clienteCom.Escribir("¡Los datos ingresados estan erroneos!");
+                clienteCom.Desconectar();
             }
-            clienteCom.Escribir("Datos ingresados correctamente");
-            clienteCom.Desconectar();
         }
     }
 }

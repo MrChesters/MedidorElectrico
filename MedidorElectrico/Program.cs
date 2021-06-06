@@ -56,25 +56,31 @@ namespace MedidorElectrico
 
         private static void Ingresar()
         {
-            Console.WriteLine("Ingrese numero de medidor, fecha 00/00/00 00:00:00 y valor consumo (separe con un |)");
-            string datos = Console.ReadLine().Trim();
-
-            string[] dato = datos.Split('|', '|', '|');
-
-            int num = Convert.ToInt32(dato[0]);
-            DateTime fecha = Convert.ToDateTime(dato[1]);
-            decimal valor = Convert.ToDecimal(dato[2]);
-
-            Medidor medidor = new Medidor()
+            try
             {
-                NroMedidor = num,
-                Fecha = fecha,
-                ValorConsumo= valor
-            };
+                Console.WriteLine("Ingrese numero de medidor, fecha 00/00/00 00:00:00 y valor consumo (separe con un |)");
+                string datos = Console.ReadLine().Trim();
 
-            lock (medidorDAL)
-            {
-                medidorDAL.AgregarMedidor(medidor);
+                string[] dato = datos.Split('|', '|', '|');
+
+                int num = Convert.ToInt32(dato[0]);
+                DateTime fecha = Convert.ToDateTime(dato[1]);
+                decimal valor = Convert.ToDecimal(dato[2]);
+
+                Medidor medidor = new Medidor()
+                {
+                    NroMedidor = num,
+                    Fecha = fecha,
+                    ValorConsumo = valor
+                };
+
+                lock (medidorDAL)
+                {
+                    medidorDAL.AgregarMedidor(medidor);
+                }
+            }
+            catch{ 
+                Console.WriteLine("Los datos ingresados son erroneos");
             }
         }
 
