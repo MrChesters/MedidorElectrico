@@ -4,7 +4,9 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using MedidorElectrico.Comunicacion;
 using MedidorModel;
 using MedidorModel.DAL;
 using MedidorModel.DTO;
@@ -18,7 +20,10 @@ namespace MedidorElectrico
         private static IMedidorDAL medidorDAL = MedidorDALArchivo.GetInstancia();
         static void Main(string[] args)
         {
-            IniciarServidor();
+            HebraServidor hebra = new HebraServidor();
+            Thread t = new Thread(new ThreadStart(hebra.Ejecutar));
+            t.IsBackground = true;
+            t.Start();
             while (Menu()) ;
         }
 
@@ -48,42 +53,6 @@ namespace MedidorElectrico
             return continuar;
         }
 
-        static void IniciarServidor()
-        {
-            int puerto = Convert.ToInt32(ConfigurationManager.AppSettings["puerto"]);
-            ServerSocket servidor = new ServerSocket(puerto);
-            if (servidor.Iniciar())
-            {
-                while (true)
-                {
-                    Console.WriteLine("Esperando cliente.....");
-                    Socket cliente = servidor.ObtenerCliente();
-                    Console.WriteLine("Cliente conectado");
-                    ClienteCom clienteCom = new ClienteCom(cliente);
-                    clienteCom.Escribir("Ingrese numero de medidor");
-                    string numero = clienteCom.Leer();
-                    clienteCom.Escribir("Ingrese fecha");
-                    string fecha = clienteCom.Leer();
-                    clienteCom.Escribir("Ingrese valor consumo");
-                    string valor = clienteCom.Leer();
-
-                    Medidor medidor = new Medidor()
-                    {
-                        NroMedidor = Convert.ToInt32(numero),
-                        Fecha = Convert.ToString(fecha),
-                        ValorConsumo = Convert.ToDecimal(valor)
-                    };
-                    medidorDAL.AgregarMedidor(medidor);
-                    clienteCom.Desconectar();
-                }
-
-            }
-            else
-            {
-                Console.WriteLine("No es posible conectarse al servidor");
-            }
-        }
-
 
         private static void Ingresar()
         {
@@ -102,16 +71,23 @@ namespace MedidorElectrico
                 Fecha = fecha,
                 ValorConsumo= valor
             };
-  
-            medidorDAL.AgregarMedidor(medidor);
+
+            lock (medidorDAL)
+            {
+                medidorDAL.AgregarMedidor(medidor);
+            }
         }
 
          static void Mostrar()
          {
-            List<Medidor> medidor = medidorDAL.ObtenerMedidor();
-            foreach(Medidor medidors in medidor)
+            List<Medidor> medidors = null;
+            lock (medidorDAL)
             {
-                Console.WriteLine(medidors);
+                medidors = medidorDAL.ObtenerMedidor();
+            }
+            foreach (Medidor medidor in medidors)
+            {
+                Console.WriteLine(medidor);
             }
          }
 
@@ -119,15 +95,3 @@ namespace MedidorElectrico
        
     }
 }
-
-
-
-//List<Medidor> medidors = null;
-//lock (medidorDAL)
-//{
-//    medidors = medidorDAL.ObtenerMedidor();
-//}
-//foreach (Medidor medidor in medidors)
-//{
-//    Console.WriteLine(medidor);
-//}
